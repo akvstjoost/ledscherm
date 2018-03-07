@@ -1,15 +1,21 @@
 PImage in, out;  // Declare variable "a" of type PImage
-int scrollX = 0;
+float scrollX = 0;
 int scrollWidth;
+float speed = 1;
 void setup() {
   in = loadImage("scroll.gif");  // Load the image into the program 
   scrollWidth = in.width;
   fullScreen();
-}
+
+  if (args != null) {
+    speed = float(args[1]);
+  }
+} 
+
 
 void draw() {
   out = createImage(120, 32, RGB);
-  scrollX++;
+  scrollX = scrollX + speed;
   if (scrollX > scrollWidth) scrollX = -200;
   inToOut();
   image(out, 0, 0);
@@ -22,10 +28,10 @@ void inToOut() {
       for (int y=0; y<32; y++) {
         int inX = (39+(abs(frame-2)*48))-x;
         int inY = (31-y);
-          out.set(
+        out.set(
           x+(frame*40), 
           y, 
-          in.get((inX+max(scrollX,0))%scrollWidth, inY));
+          in.get((inX+max(int(scrollX), 0))%scrollWidth, inY));
       }
     }
   }
